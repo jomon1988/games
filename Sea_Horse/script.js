@@ -98,28 +98,40 @@ window.addEventListener('load', function (params) {
             this.markedForDeletion = false;
             this.life = 3;
             this.score = this.life;
+            this.frameX = 0;
+            this.frameY = 0;
+            this.maxFrame = 37;
         }
         update() {
             this.x += this.speedX
             if (this.x +this.width < 0) {
                 this.markedForDeletion = true;
             }
+            if (this.frameX < this.maxFrame) {
+                this.frameX++;
+            } else {
+                this.frameX = 0
+            }
         }
         draw(context) {
             context.fillStyle = 'red';
-            context.fillRect(this.x,this.y,this.width,this.height);
+            // context.fillRect(this.x,this.y,this.width,this.height);
+            // debugger;
+            context.drawImage(this.image,this.frameX*this.width,this.frameY*this.height,this.width,this.height,this.x,this.y,this.width,this.height)
             context.fillStyle = 'black';
             context.font = '20px';
-            context.fillText(this.life,this.x,this.y)
+            // context.fillText(this.life,this.x,this.y)
         }
     }
 
     class Enemy1 extends Enemy {
         constructor(game) {
             super(game)
-            this.width = 228 * 0.2
-            this.height = 169 * 0.2
+            this.width = 228
+            this.height = 169
             this.y = Math.random() * (this.game.height*0.9 - this.height)
+            this.image = document.getElementById('enemy1')
+            this.frameY = Math.floor(Math.random() * 3)
         }
     }
     class Layer {
@@ -228,7 +240,7 @@ window.addEventListener('load', function (params) {
             this.score = 0
             this.winningScore = 10
             this.gameTime = 0;
-            this.maxTime = 20000;
+            this.maxTime = 60000;
             this.speed = 1;
         }
         update(deltaTime) {
